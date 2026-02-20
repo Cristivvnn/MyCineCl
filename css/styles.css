@@ -2,19 +2,18 @@
     --blanco: #ffffff;
     --negro: #0b0b0b;
     --rojo-albo: #e50914;
-    --gris-oscuro: #1a1a1a;
+    --gris: #1a1a1a;
 }
 
 body {
     background-color: var(--negro);
     color: var(--blanco);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0; padding-bottom: 50px;
 }
 
 header {
     background: var(--blanco);
-    color: var(--negro);
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
@@ -23,54 +22,59 @@ header {
     position: sticky; top: 0; z-index: 1000;
 }
 
-.logo { font-size: 24px; font-weight: 900; text-transform: uppercase; }
+.logo { color: var(--negro); font-size: 22px; font-weight: 900; text-transform: uppercase; }
 .logo span { color: var(--rojo-albo); }
-.user-info { font-weight: bold; font-size: 14px; }
+
+.search-box { display: flex; flex: 1; max-width: 400px; margin: 0 20px; }
+.search-box input {
+    width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px 0 0 5px; outline: none;
+}
+.search-box button {
+    padding: 10px 15px; background: var(--rojo-albo); border: none; color: white; cursor: pointer; border-radius: 0 5px 5px 0;
+}
+
+.user-tag { color: var(--negro); font-weight: bold; font-size: 13px; white-space: nowrap; }
 
 .container { padding: 20px 5%; }
-h2 { border-left: 5px solid var(--rojo-albo); padding-left: 15px; margin: 30px 0 20px; font-size: 20px; }
+h2 { border-left: 5px solid var(--rojo-albo); padding-left: 15px; margin: 30px 0 20px; font-size: 18px; }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 20px;
 }
 
 .card {
-    background: var(--gris-oscuro);
+    background: var(--gris);
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
     transition: 0.3s;
     border: 1px solid #333;
 }
-
-.card:hover { transform: translateY(-5px); border-color: var(--rojo-albo); }
+.card:hover { transform: translateY(-5px); border-color: var(--rojo-albo); box-shadow: 0 5px 15px rgba(229,9,20,0.3); }
 .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
-.card-info { padding: 10px; text-align: center; font-size: 12px; font-weight: bold; }
+.card-info { padding: 10px; text-align: center; font-size: 11px; font-weight: bold; }
 
-/* MODAL */
+/* REPRODUCTOR MODAL */
 .modal {
     display: none; position: fixed; top: 0; left: 0;
     width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000;
 }
-
 .modal-content {
-    width: 90%; max-width: 1000px; margin: 5vh auto;
+    width: 95%; max-width: 1000px; margin: 2vh auto;
     background: #000; border-radius: 10px; overflow: hidden;
 }
+.modal-header { display: flex; background: #111; align-items: center; }
+.btn-server { padding: 15px; font-size: 11px; font-weight: bold; cursor: pointer; color: #777; flex: 1; text-align: center; }
+.btn-server.active { background: var(--rojo-albo); color: white; }
+.close-btn { font-size: 30px; color: white; padding: 0 20px; cursor: pointer; }
 
-.modal-header { display: flex; justify-content: space-between; background: #111; align-items: center; }
-.server-tabs { display: flex; flex: 1; }
-.tab {
-    background: none; border: none; color: #777; padding: 15px 20px;
-    cursor: pointer; font-weight: bold; font-size: 12px;
+.video-frame { position: relative; padding-bottom: 56.25%; height: 0; }
+.video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.footer-modal { padding: 15px; font-size: 12px; color: #aaa; text-align: center; background: #111; }
+
+@media (max-width: 600px) {
+    header { flex-direction: column; gap: 10px; }
+    .search-box { max-width: 100%; margin: 0; }
 }
-.tab.active { color: #fff; background: var(--rojo-albo); }
-.close-btn { color: white; font-size: 30px; padding: 0 20px; cursor: pointer; }
-
-.video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-.aviso { padding: 10px; text-align: center; font-size: 12px; color: #aaa; background: #111; }
-
-@media (max-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); } }
