@@ -10,32 +10,35 @@
 
 <header>
     <div class="logo">My<span>Cine</span> Premium</div>
-    <div class="user-info">Hola, Cristian ⚪🔴</div>
+    <div class="search-box">
+        <input type="text" id="input-busqueda" placeholder="Buscar película o serie..." onkeyup="verificarEnter(event)">
+        <button onclick="buscarContenido()">🔍</button>
+    </div>
+    <div class="user-tag">Cristian ⚪🔴</div>
 </header>
 
 <div class="container">
-    <section>
-        <h2>🎬 Películas Destacadas</h2>
-        <div class="grid" id="grid-peliculas"></div>
-    </section>
+    <h2 id="titulo-seccion">🍿 Tus Favoritas</h2>
+    <div class="grid" id="grid-principal"></div>
 
-    <section>
+    <div id="seccion-series">
         <h2>📺 Series y Animación</h2>
         <div class="grid" id="grid-series"></div>
-    </section>
+    </div>
 </div>
 
 <div id="modal-repro" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <div class="server-tabs">
-                <button class="tab active" onclick="cambiarServer(1)">OPCIÓN 1</button>
-                <button class="tab" onclick="cambiarServer(2)">OPCIÓN 2</button>
-            </div>
+            <span class="btn-server active" onclick="cambiarServer(1)">SERVER 1 (Latino)</span>
+            <span class="btn-server" onclick="cambiarServer(2)">SERVER 2 (Multi)</span>
             <span class="close-btn" onclick="cerrarModal()">&times;</span>
         </div>
-        <div class="video-container">
+        <div class="video-frame">
             <iframe id="iframe-video" src="" allowfullscreen></iframe>
+        </div>
+        <div class="footer-modal">
+            📢 <b>AUDIO LATINO:</b> Si el video inicia en inglés, pulsa el icono <b>⚙️ (Ajustes)</b> o <b>Idiomas</b> dentro del reproductor y selecciona <b>Spanish/Latino</b>.
         </div>
     </div>
 </div>
