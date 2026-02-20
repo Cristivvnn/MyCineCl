@@ -2,242 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MyCine Premium - Cristian</title>
-    <style>
-        /* RESET Y VARIABLES */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        :root {
-            --blanco: #ffffff;
-            --negro: #000000;
-            --rojo-albo: #e50914; /* Rojo intenso */
-            --gris-fondo: #121212;
-            --gris-claro: #ccc;
-        }
-        body {
-            background-color: var(--negro);
-            color: var(--blanco);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 0;
-            padding-bottom: 50px; /* Espacio al final */
-        }
-
-        /* HEADER SÓLIDO */
-        header {
-            background: var(--blanco);
-            padding: 15px 20px;
-            display: flex;
-            flex-wrap: wrap; /* Permite que se adapte en pantallas muy pequeñas */
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 4px solid var(--rojo-albo);
-            box-shadow: 0 2px 10px rgba(255,255,255,0.1);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { color: var(--negro); font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 5px; }
-        .logo span { color: var(--rojo-albo); }
-        .user-tag { 
-            color: var(--blanco); background: var(--negro); 
-            font-weight: 700; font-size: 13px; padding: 8px 15px; 
-            border-radius: 30px; border: 2px solid var(--rojo-albo);
-            white-space: nowrap; /* Evita que el nombre se parta en dos líneas */
-        }
-
-        /* CONTENEDOR PRINCIPAL */
-        .container { padding: 20px 15px; max-width: 1200px; margin: auto; }
-        
-        h2 { 
-            color: var(--blanco);
-            border-left: 6px solid var(--rojo-albo); 
-            padding-left: 15px; margin: 35px 0 20px 0; 
-            text-transform: uppercase; font-size: 18px; letter-spacing: 1px;
-        }
-
-        /* GRID ROBUSTO (No se rompe) */
-        .grid {
-            display: grid;
-            /* Esto asegura que las columnas tengan un ancho mínimo decente en celular */
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-        }
-
-        .item {
-            position: relative;
-            cursor: pointer;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #222;
-            transition: transform 0.2s ease-in-out;
-            aspect-ratio: 2/3; /* Mantiene siempre la forma de póster */
-        }
-        .item:active { transform: scale(0.98); } /* Efecto click en celular */
-
-        .item img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.9; }
-
-        .item-info {
-            position: absolute; bottom: 0; width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.5));
-            padding: 15px 10px 10px 10px;
-            text-align: center; font-size: 13px; font-weight: bold;
-            text-shadow: 1px 1px 2px black;
-        }
-
-        .badge-latino {
-            position: absolute; top: 8px; right: 8px; z-index: 10;
-            background: #00c200; color: white;
-            padding: 4px 8px; font-size: 10px; font-weight: 900; border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-
-        /* MODAL REPRODUCTOR CORREGIDO */
-        .modal {
-            display: none; position: fixed; z-index: 2000;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.95);
-            overflow-y: auto; /* Permite scroll si el celular es muy bajo */
-            padding-top: 20px; /* Espacio arriba */
-        }
-
-        .modal-content {
-            width: 95%; max-width: 1000px; margin: 0 auto 30px auto;
-            position: relative; background: #000;
-            border-radius: 12px; overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        /* Botón CERRAR visible */
-        .close-btn {
-            text-align: right; padding: 10px 20px; background: var(--negro);
-        }
-        .close-btn span {
-            color: var(--rojo-albo); font-size: 30px; font-weight: bold; cursor: pointer; padding: 5px 15px; border: 2px solid var(--rojo-albo); border-radius: 5px; display: inline-block;
-        }
-
-        /* BARRA DE SERVIDORES VISIBLE */
-        .server-bar { 
-            display: flex; flex-wrap: wrap; 
-            background: #1a1a1a; border-bottom: 3px solid var(--rojo-albo);
-        }
-        .srv { 
-            flex: 1 1 auto; /* Crecen para ocupar espacio */
-            text-align: center; padding: 15px 10px; 
-            cursor: pointer; font-size: 13px; font-weight: 700; color: var(--gris-claro); 
-            transition: 0.3s; min-width: 100px; /* Ancho mínimo para que no se aplasten */
-        }
-        .srv:hover { background: #333; color: #fff; }
-        /* Estado activo */
-        .srv.active { background: var(--rojo-albo); color: var(--blanco); }
-
-        iframe { width: 100%; height: 55vh; min-height: 300px; max-height: 600px; border: none; background: #000; display: block; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCine Premium | Cristian ⚪🔴</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <header>
     <div class="logo">My<span>Cine</span> Premium</div>
-    <div class="user-tag">👤 Cristian </div>
+    <div class="user-info">Hola, Cristian ⚪🔴</div>
 </header>
 
 <div class="container">
-    <h2>🍿 Películas "Filete"</h2>
-    <div class="grid" id="gridMovies"></div>
+    <section>
+        <h2>🎬 Películas Destacadas</h2>
+        <div class="grid" id="grid-peliculas"></div>
+    </section>
 
-    <h2>📺 Series Clásicas</h2>
-    <div class="grid" id="gridSeries"></div>
+    <section>
+        <h2>📺 Series y Animación</h2>
+        <div class="grid" id="grid-series"></div>
+    </section>
 </div>
 
-<div id="modalPlayer" class="modal">
-    <div class="close-btn"><span onclick="cerrar()">CERRAR X</span></div>
+<div id="modal-repro" class="modal">
     <div class="modal-content">
-        <div class="server-bar">
-            <div class="srv active" id="s1" onclick="switchSrv(1)">OPCIÓN 1 (Latino/Multi)</div>
-            <div class="srv" id="s2" onclick="switchSrv(2)">OPCIÓN 2 (Backup HD)</div>
-            <div class="srv" id="s3" onclick="switchSrv(3)">OPCIÓN 3 (Alternativa)</div>
+        <div class="modal-header">
+            <div class="server-tabs">
+                <button class="tab active" onclick="cambiarServer(1)">OPCIÓN 1 (Latino)</button>
+                <button class="tab" onclick="cambiarServer(2)">OPCIÓN 2 (Multi)</button>
+            </div>
+            <span class="close-btn" onclick="cerrarModal()">&times;</span>
         </div>
-        <div style="padding:10px; background:#111; font-size:12px; text-align:center; color:#aaa;">
-            ⚠️ Si sale en inglés, busca el icono ⚙️ o CC dentro del video para cambiar a Español.
+        <div class="video-container">
+            <iframe id="iframe-video" src="" allowfullscreen></iframe>
         </div>
-        <iframe id="reproductor" src="" allowfullscreen></iframe>
+        <div class="aviso">📢 Usa el icono ⚙️ dentro del video para poner audio <b>Latino</b>.</div>
     </div>
 </div>
 
-<script>
-    // DATOS DE PELÍCULAS Y SERIES
-    const movies = [
-        { t: "Scarface", id: "tt0086250", img: "iS9Uv9t9ntS6bt3ffOTv99m4bsf" },
-        { t: "Cars 1", id: "tt0317219", img: "abW59qvvyYSTZTYCOOUvdpMgK9j" },
-        { t: "Cars 2", id: "tt1216475", img: "9f9Ew9vVfO78OndIu6763Isk3Dk" },
-        { t: "Cars 3", id: "tt3407616", img: "9pM6C91D45R0U64fHjT22FvWwA5" },
-        { t: "DB Super: Broly", id: "tt7961032", img: "f0NUXUbCq9I2vD6vMGp0pYpM6JF" },
-        { t: "Spider-Man: No Way Home", id: "tt10872600", img: "1g0mD1pS9vSUr67O9S7q8SInOno" },
-        { t: "Avengers: Endgame", id: "tt4154796", img: "or06mS30mYmOQZp7lLpYvDeHABD" },
-        { t: "John Wick 4", id: "tt10366206", img: "gh2bmprLtUQ8o87ojPhl9Mvr7bow" }
-    ];
-
-    const series = [
-        { t: "Los Simpson", id: "tt0096697", img: "gzB97AmSbtG7S7p7mGFTdn9vX6L" },
-        { t: "Futurama", id: "tt0149460", img: "799rXp08p5Xv8X8V6B9vX9V6B9v" },
-        { t: "Dragon Ball Z", id: "tt0121955", img: "6Xp9fXv8X8V6B9vX9V6B9vX9V6B" },
-        { t: "Breaking Bad", id: "tt0903747", img: "ggFHVNu6YYI5L9pCfOacjizRGt" }
-    ];
-
-    let currentId = "";
-    let currentType = "movie";
-
-    // FUNCIÓN PARA DIBUJAR LA CUADRÍCULA
-    function draw(list, containerId, type) {
-        const div = document.getElementById(containerId);
-        list.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'item';
-            // Al hacer click, abre el modal
-            card.onclick = () => openModal(item.id, type);
-            card.innerHTML = `
-                <div class="badge-latino">MULTI-IDIOMA</div>
-                <img src="https://image.tmdb.org/t/p/w300/${item.img}.jpg" loading="lazy" alt="${item.t}">
-                <div class="item-info">${item.t}</div>
-            `;
-            div.appendChild(card);
-        });
-    }
-
-    // ABRIR EL REPRODUCTOR
-    function openModal(id, type) {
-        currentId = id;
-        currentType = type;
-        // Siempre intenta abrir primero el servidor 1
-        switchSrv(1);
-        document.getElementById('modalPlayer').style.display = "block";
-        document.body.style.overflow = "hidden"; // Evita scroll en el fondo
-    }
-
-    // CAMBIAR ENTRE LOS 3 SERVIDORES "FILETE"
-    function switchSrv(n) {
-        const frame = document.getElementById('reproductor');
-        let url = "";
-        
-        // OPCIÓN 1: VidSrc.to (Muy estable, suele tener multi-idioma)
-        if(n === 1) url = `https://vidsrc.to/embed/${currentType}/${currentId}`;
-        
-        // OPCIÓN 2: Embed.su (Buena calidad HD, buscar idioma en ajustes)
-        if(n === 2) url = `https://embed.su/embed/${currentType}/${currentId}`;
-        
-        // OPCIÓN 3: MultiEmbed (Agregador, prueba varias fuentes)
-        if(n === 3) url = `https://multiembed.mov/?video_id=${currentId}&tmdb=1`;
-
-        frame.src = url;
-        
-        // Actualiza visualmente el botón activo
-        document.querySelectorAll('.srv').forEach(s => s.classList.remove('active'));
-        document.getElementById('s' + n).classList.add('active');
-    }
-
-    // CERRAR EL REPRODUCTOR
-    function cerrar() {
-        document.getElementById('modalPlayer').style.display = "none";
-        document.getElementById('reproductor').src = ""; // Detiene el video
-        document.body.style.overflow = "auto"; // Reactiva el scroll
-    }
-
-    // INICIALIZAR LA PÁGINA
-    draw(movies,
+<script src="js/script.js"></script>
+</body>
+</html>
