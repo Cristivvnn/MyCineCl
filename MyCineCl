@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCine Premium - Cristian</title>
+    <style>
+        :root {
+            --blanco: #ffffff;
+            --negro: #0b0b0b;
+            --rojo-albo: #e50914; 
+            --gris-card: rgba(20, 20, 20, 0.95);
+        }
+
+        html { overflow-y: scroll; scroll-behavior: smooth; }
+        body {
+            background: #000;
+            color: var(--blanco);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+        }
+
+        /* HEADER ESTILO PROFESIONAL */
+        header {
+            background-color: var(--blanco);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--rojo-albo);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .logo { color: var(--negro); font-size: 26px; font-weight: 900; letter-spacing: -1px; }
+        .logo span { color: var(--rojo-albo); }
+
+        .search-container { flex-grow: 1; text-align: center; padding: 0 20px; }
+        .search-bar {
+            width: 100%; max-width: 500px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            font-size: 15px; outline: none;
+            transition: 0.3s;
+        }
+        .search-bar:focus { border-color: var(--rojo-albo); box-shadow: 0 0 8px rgba(229,9,20,0.2); }
+
+        .user-info { color: #000; font-weight: bold; border-left: 2px solid #ddd; padding-left: 15px; min-width: 100px; text-align: right; }
+
+        .container { padding: 30px 5%; }
+
+        /* GRID DE PELÍCULAS */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--gris-card);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, border 0.3s;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid #222;
+        }
+        .card:hover { 
+            transform: translateY(-10px);
+            border-color: var(--rojo-albo); 
+        }
+
+        .card img { width: 100%; height: 230px; object-fit: cover; display: block; }
+        
+        .badge {
+            position: absolute; top: 8px; left: 8px;
+            background: #00bc00; color: white;
+            padding: 2px 6px; font-size: 10px; font-weight: bold; border-radius: 3px;
+        }
+
+        .info { padding: 10px; text-align: center; font-size: 13px; font-weight: 500; }
+
+        /* MODAL REPRODUCTOR */
+        .modal {
+            display: none; position: fixed;
+            z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+        }
+        .modal-content {
+            position: relative; top: 50%; transform: translateY(-50%);
+            width: 90%; max-width: 1000px; margin: auto;
+        }
+        
+        .server-tabs { display: flex; background: #1a1a1a; border-radius: 8px 8px 0 0; overflow: hidden; }
+        .tab {
+            padding: 12px; cursor: pointer; color: #aaa;
+            font-size: 11px; flex: 1; text-align: center; font-weight: bold;
+            border-bottom: 3px solid transparent;
+        }
+        .tab.active { color: #fff; background: var(--rojo-albo); border-bottom: 3px solid #fff; }
+
+        iframe { width: 100%; height: 500px; border: none; background: #000; }
+        .close { position: absolute; top: -45px; right: 0; color: white; font-size: 35px; cursor: pointer; }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 10px; }
+            .search-container { width: 100%; }
+            iframe { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">My<span>Cine</span> Premium</div>
+    <div class="search-container">
+        <input type="text" id="buscador" class="search-bar" placeholder="Buscar película..." onkeyup="filtrar()">
+    </div>
+    <div class="user-info">Hola, Cristian ⚪🔴</div>
+</header>
+
+<div class="container">
+    <div class="movie-grid" id="gridPeliculas"></div>
+</div>
+
+<div id="modalRepro" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrar()">&times;</span>
+        <div class="server-tabs">
+            <div class="tab active" id="tab1" onclick="cambiarServer(1)">OPCIÓN 1</div>
+            <div class="tab" id="tab2" onclick="cambiarServer(2)">OPCIÓN 2</div>
+            <div class="tab" id="tab3" onclick="cambiarServer(3)">OPCIÓN 3</div>
+        </div>
+        <iframe id="iframeVideo" src="" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script>
+    // LISTA DE PELÍCULAS CON IMÁGENES REALES
+    const peliculas = [
+        { t: "Scarface", id: "tt0086250", img: "iS9Uv9t9ntS6bt3ffOTv99m4bsf" },
+        { t: "Cars 1", id: "tt0317219", img: "abW59qvvyYSTZTYCOOUvdpMgK9j" },
+        { t: "Cars 2", id: "tt1216475", img: "9f9Ew9vVfO78OndIu6763Isk3Dk" },
+        { t: "Cars 3", id: "tt3407616", img: "9pM6C91D45R0U64fHjT22FvWwA5" },
+        { t: "Dragon Ball Super: Broly", id: "tt7961032", img: "f0NUXUbCq9I2vD6vMGp0pYpM6JF" },
+        { t: "Super Hero", id: "tt14614812", img: "v796S66vS69vS69vS69vS69v" },
+        { t: "Shrek 1", id: "tt0126029", img: "p7vKqitB92w8zU451U54bK3Tio6" },
+        { t: "Coco", id: "tt2380307", img: "7HvsulfQkyFOGwlJ0qlyyphng0p" },
+        { t: "Spider-Man: No Way Home", id: "tt10872600", img: "1g0mD1pS9vSUr67O9S7q8SInOno" },
+        { t: "Deadpool & Wolverine", id: "tt6263850", img: "8367vB8X8V6B9vX9V6B9vX9V6B" },
+        { t: "Avengers: Endgame", id: "tt4154796", img: "or06mS30mYmOQZp7lLpYvDeHABD" }
+    ];
+
+    const grid = document.getElementById('gridPeliculas');
+    let currentId = "";
+
+    function cargarPeliculas(lista) {
+        grid.innerHTML = "";
+        lista.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => abrirModal(p.id);
+            card.innerHTML = `
+                <div class="badge">LATINO</div>
+                <img src="https://image.tmdb.org/t/p/w500/${p.img}.jpg" onerror="this.src='https://via.placeholder.com/500x750?text=No+Image'" alt="${p.t}">
+                <div class="info"><strong>${p.t}</strong></div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function abrirModal(id) {
+        currentId = id;
+        cambiarServer(1);
+        document.getElementById('modalRepro').style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function cambiarServer(n) {
+        let url = "";
+        if(n == 1) url = "https://vidsrc.icu/embed/movie/" + currentId;
+        if(n == 2) url = "https://embed.su/embed/movie/" + currentId;
+        if(n == 3) url = "https://vidsrc.cc/v2/embed/movie/" + currentId;
+        
+        document.getElementById('iframeVideo').src = url;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab' + n).classList.add('active');
+    }
+
+    function cerrar() {
+        document.getElementById('modalRepro').style.display = "none";
+        document.getElementById('iframeVideo').src = "";
+        document.body.style.overflow = "auto";
+    }
+
+    function filtrar() {
+        let texto = document.getElementById('buscador').value.toLowerCase();
+        let cards = document.getElementsByClassName('card');
+        for (let c of cards) {
+            let title = c.querySelector('strong').innerText.toLowerCase();
+            c.style.display = title.includes(texto) ? "" : "none";
+        }
+    }
+
+    cargarPeliculas(peliculas);
+</script>
+</body>
+</html>
