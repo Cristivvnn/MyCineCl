@@ -1,0 +1,76 @@
+:root {
+    --blanco: #ffffff;
+    --negro: #0b0b0b;
+    --rojo-albo: #e50914;
+    --gris-oscuro: #1a1a1a;
+}
+
+body {
+    background-color: var(--negro);
+    color: var(--blanco);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
+}
+
+header {
+    background: var(--blanco);
+    color: var(--negro);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 5px solid var(--rojo-albo);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+.logo { font-size: 24px; font-weight: 900; text-transform: uppercase; }
+.logo span { color: var(--rojo-albo); }
+.user-info { font-weight: bold; font-size: 14px; }
+
+.container { padding: 20px 5%; }
+h2 { border-left: 5px solid var(--rojo-albo); padding-left: 15px; margin: 30px 0 20px; font-size: 20px; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--gris-oscuro);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid #333;
+}
+
+.card:hover { transform: translateY(-5px); border-color: var(--rojo-albo); }
+.card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+.card-info { padding: 10px; text-align: center; font-size: 12px; font-weight: bold; }
+
+/* MODAL */
+.modal {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000;
+}
+
+.modal-content {
+    width: 90%; max-width: 1000px; margin: 5vh auto;
+    background: #000; border-radius: 10px; overflow: hidden;
+}
+
+.modal-header { display: flex; justify-content: space-between; background: #111; align-items: center; }
+.server-tabs { display: flex; flex: 1; }
+.tab {
+    background: none; border: none; color: #777; padding: 15px 20px;
+    cursor: pointer; font-weight: bold; font-size: 12px;
+}
+.tab.active { color: #fff; background: var(--rojo-albo); }
+.close-btn { color: white; font-size: 30px; padding: 0 20px; cursor: pointer; }
+
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.aviso { padding: 10px; text-align: center; font-size: 12px; color: #aaa; background: #111; }
+
+@media (max-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); } }
